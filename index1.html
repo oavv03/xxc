@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximamente - Portal en Órbita</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Three.js para la simulación 3D interactiva -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Outfit (Tipografía Tecnológica y Elegante) -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+   
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Outfit"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            overflow: hidden;
+            background-color: #03000a;
+        }
+        /* Transición de suavizado general */
+        .smooth-transition {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        /* Efecto de borde brillante (Glow) */
+        .neon-glow {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(14, 165, 233, 0.1);
+        }
+        .neon-glow:hover {
+            box-shadow: 0 0 35px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(14, 165, 233, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+        /* Animación para el respirador de fondo */
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 8s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex items-center justify-center relative px-4 sm:px-6 lg:px-8 font-sans">
+
+    <!-- Lienzo de renderizado 3D interactivo -->
+    <canvas id="canvas3d" class="absolute inset-0 w-full h-full z-0"></canvas>
+
+    <!-- Resplandores cósmicos de fondo (Auroras nebulosas de color) -->
+    <div class="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-cyan-600/20 rounded-full blur-[130px] pointer-events-none z-0 animate-pulse-slow"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-[550px] h-[550px] bg-emerald-600/15 rounded-full blur-[150px] pointer-events-none z-0 animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <!-- Contenedor Principal de la Tarjeta Flotante -->
+    <main class="relative z-10 w-full max-w-lg bg-slate-950/40 border border-white/10 backdrop-blur-xl rounded-3xl p-8 sm:p-12 shadow-2xl neon-glow smooth-transition my-8">
+       
+        <!-- Badge de Estado Superior -->
+        <div class="flex justify-center mb-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-widest uppercase bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                Construyendo el futuro
+            </span>
+        </div>
+
+        <!-- Título Principal Editorial / Tecnológico -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-200 via-emerald-100 to-green-200 leading-tight">
+                Espacio en <span class="text-emerald-400">desarrollo</span>
+            </h1>
+            <div class="h-[2px] w-16 bg-gradient-to-r from-cyan-500 to-emerald-400 mx-auto my-6 rounded-full"></div>
+            <p class="text-slate-400 font-light leading-relaxed text-sm sm:text-base max-w-md mx-auto">
+                Si requiere obtener una cita para tramitar su carné de residente permanente por primera vez, puede hacerlo a través de los siguientes medios:
+ 
+                Por correo: citaresidente@tribunal-electoral.gob.pa
+                Vía telefónica: 507-8080
+                Presencialmente: Departamento de Extranjería, planta baja del ala occidental, Dirección Regional de Cedulación de la Sede del Tribunal Electoral en Ancón.
+            </p>
+        </div>
+
+        <!-- Indicador de fases interactivas -->
+        <div class="mb-8 p-5 bg-white/[0.02] border border-white/5 rounded-2xl">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-xs font-semibold text-slate-400 uppercase tracking-widest">Estado del Sistema</span>
+                <span class="text-xs font-bold text-emerald-400">75% Completado</span>
+            </div>
+            <!-- Barra de Progreso Fluida con Brillo de Neón -->
+            <div class="h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                <div class="h-full bg-gradient-to-r from-cyan-600 via-teal-500 to-emerald-400 rounded-full w-3/4 animate-pulse"></div>
+            </div>
+        </div>
+
+        <!-- Botón de Retorno a la Página Inicial (Redirigido a tribunalcontigo.com) -->
+        <div class="pt-6 border-t border-white/5">
+            <a href="https://www.tribunal-electoral.gob.pa/" class="group w-full bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white font-medium text-sm px-6 py-3.5 rounded-xl smooth-transition active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-cyan-950/50">
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                Volver a la página inicial
+            </a>
+        </div>
+
+        <!-- Redes Sociales Integradas -->
+        <div class="flex justify-center gap-4 mt-8 pt-6 border-t border-white/5">
+            <a href="#" class="p-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/5 hover:border-white/20 smooth-transition" aria-label="Twitter">
+                <i data-lucide="twitter" class="w-4.5 h-4.5"></i>
+            </a>
+            <a href="#" class="p-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/5 hover:border-white/20 smooth-transition" aria-label="Instagram">
+                <i data-lucide="instagram" class="w-4.5 h-4.5"></i>
+            </a>
+            <a href="#" class="p-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/5 hover:border-white/20 smooth-transition" aria-label="Github">
+                <i data-lucide="github" class="w-4.5 h-4.5"></i>
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+
+        // --- SISTEMA INTERACTIVO DE RED 3D (THREE.JS) ---
+        let scene, camera, renderer, coreMesh, particleSystem;
+        const canvas = document.getElementById('canvas3d');
+
+        // Configuración de interactividad del cursor
+        const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        function init3D() {
+            // Escenario
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x03000a, 0.0015);
+
+            // Cámara
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.z = 240;
+
+            // Renderizador
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // 1. Núcleo Wireframe Central (Cuerpo geométrico)
+            const coreGeometry = new THREE.IcosahedronGeometry(50, 1);
+            const coreMaterial = new THREE.MeshBasicMaterial({
+                color: 0x0ea5e9, // Celeste / Sky blue de Tailwind
+                wireframe: true,
+                transparent: true,
+                opacity: 0.35
+            });
+            coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
+            scene.add(coreMesh);
+
+            // Estructura interna sólida menor para el núcleo
+            const innerGeometry = new THREE.OctahedronGeometry(20, 0);
+            const innerMaterial = new THREE.MeshBasicMaterial({
+                color: 0x10b981, // Verde esmeralda de Tailwind
+                wireframe: true,
+                transparent: true,
+                opacity: 0.5
+            });
+            const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
+            coreMesh.add(innerMesh);
+
+            // 2. Enjambre orbital de partículas (Nebulosa)
+            const particleCount = 1200;
+            const particleGeometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            const colorCeleste = new THREE.Color(0x0ea5e9);
+            const colorGreen = new THREE.Color(0x10b981);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                // Distribuir partículas en una esfera alrededor del núcleo
+                const radius = 100 + Math.random() * 150;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+
+                positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i+1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i+2] = radius * Math.cos(phi);
+
+                // Alternar degradados de color entre partículas (Celeste y Verde)
+                const mixedColor = colorCeleste.clone().lerp(colorGreen, Math.random());
+                colors[i] = mixedColor.r;
+                colors[i+1] = mixedColor.g;
+                colors[i+2] = mixedColor.b;
+            }
+
+            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            // Crear una textura pequeña para partículas redondas y suaves
+            const pCanvas = document.createElement('canvas');
+            pCanvas.width = 16;
+            pCanvas.height = 16;
+            const pCtx = pCanvas.getContext('2d');
+            const grad = pCtx.createRadialGradient(8, 8, 0, 8, 8, 8);
+            grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+            grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            pCtx.fillStyle = grad;
+            pCtx.fillRect(0, 0, 16, 16);
+           
+            const pTexture = new THREE.CanvasTexture(pCanvas);
+
+            const particleMaterial = new THREE.PointsMaterial({
+                size: 3.5,
+                map: pTexture,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            });
+
+            particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+            scene.add(particleSystem);
+
+            // Luces básicas
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            // Registro de Eventos
+            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('mousemove', onMouseMove);
+           
+            // Añadir adaptabilidad táctil para arrastre y rotación del universo
+            window.addEventListener('touchmove', onTouchMove, { passive: true });
+        }
+
+        // CONTROLADORES DE EVENTOS
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouse.targetX = (event.clientX - windowHalfX) * 0.15;
+            mouse.targetY = (event.clientY - windowHalfY) * 0.15;
+        }
+
+        function onTouchMove(event) {
+            if (event.touches.length === 1) {
+                mouse.targetX = (event.touches[0].pageX - windowHalfX) * 0.25;
+                mouse.targetY = (event.touches[0].pageY - windowHalfY) * 0.25;
+            }
+        }
+
+        // Ciclo de animación
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Interpolación suavizada para simular inercia física de la cámara
+            mouse.x += (mouse.targetX - mouse.x) * 0.05;
+            mouse.y += (mouse.targetY - mouse.y) * 0.05;
+
+            camera.position.x += (mouse.x - camera.position.x) * 0.05;
+            camera.position.y += (-mouse.y - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            // Rotación constante automática del núcleo y del enjambre
+            if (coreMesh) {
+                coreMesh.rotation.y += 0.005;
+                coreMesh.rotation.x += 0.003;
+            }
+
+            if (particleSystem) {
+                particleSystem.rotation.y -= 0.0015;
+                particleSystem.rotation.x += 0.0005;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Inicializar el espacio 3D al cargar completamente la página
+        window.onload = function () {
+            init3D();
+            animate();
+        };
+    </script>
+</body>
+</html>
